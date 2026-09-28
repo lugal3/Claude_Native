@@ -4,13 +4,13 @@ import { useApi } from "../hooks/useApi";
 import { getObras } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
     const { instance, accounts } = useMsal();
     const { getAccessToken } = useApi();
     const navigate = useNavigate();
 
-    const [apiData, setApiData] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [apiData, setApiData] = useState(null);
+    const [error, setError] = useState(null);
 
     const account = accounts[0];
 
@@ -49,7 +49,6 @@ export const Dashboard: React.FC = () => {
                 <h3>Bienvenido, {account?.name}</h3>
                 <p><strong>Email:</strong> {account?.username}</p>
                 
-                {/* Mostramos los claims del ID token, especialmente roles si están configurados */}
                 <div className="json-box">
                     <h4>Claims del Token (incluye Roles si existen):</h4>
                     <pre>{JSON.stringify(account?.idTokenClaims, null, 2)}</pre>

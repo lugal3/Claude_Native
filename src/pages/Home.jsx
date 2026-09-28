@@ -2,7 +2,7 @@ import React from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../config/authConfig";
 
-export const Home: React.FC = () => {
+export const Home = () => {
     const { instance } = useMsal();
 
     const handleLogin = () => {

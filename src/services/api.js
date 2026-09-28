@@ -6,7 +6,7 @@ export const apiClient = axios.create({
     baseURL: apiConfig.backendEndpoint,
 });
 
-export const getObras = async (accessToken: string) => {
+export const getObras = async (accessToken) => {
     try {
         // Petición al backend simulado
         const response = await apiClient.get('', {
