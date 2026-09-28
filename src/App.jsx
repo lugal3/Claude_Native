@@ -1,15 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Dashboard } from './pages/Dashboard';
+import { Contacto } from './pages/Contacto';
+import { Artistas } from './pages/Artistas';
+import { Obras } from './pages/Obras';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
-        {/* Ruta pública */}
+        {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
+        <Route path="/contacto" element={<Contacto />} />
+        <Route path="/artistas" element={<Artistas />} />
+        <Route path="/obras" element={<Obras />} />
 
         {/* Ruta privada protegida por Entra ID */}
         <Route
