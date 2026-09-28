@@ -1,54 +1,32 @@
-# Pedidos360 · Entra ID + React + AWS (starter)
+# React + TypeScript + Vite
 
-**DSY1107 · Desarrollo Cloud Native I** — starter de referencia para la
-integración de autenticación/autorización del caso **Pedidos360**: frontend
-en React (MSAL) + backend en AWS Lambda detrás de API Gateway, protegido con
-Microsoft Entra ID.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-📘 **Empieza por la guía**: [`docs/guia_entra_id_v2.html`](./docs/guia_entra_id_v2.html)
-(descárgala y ábrela en el navegador — trae los pasos completos: tenant,
-registro de las dos apps, roles, MSAL, JWT Authorizer, CORS y errores
-comunes).
+Currently, two official plugins are available:
 
-## Qué trae este starter
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- Login/logout con **MSAL React** (Authorization Code + PKCE).
-- Un `ApiClient` reutilizable (`src/api/client.ts`) que obtiene el access
-  token para el backend y lo inyecta como `Authorization: Bearer …`, con
-  fallback a `acquireTokenRedirect` cuando el token silencioso falla.
-- Un panel de ejemplo (`TokenInspector`) para decodificar y ver los claims
-  del token (`aud`, `iss`, `scp`, `roles`, `exp`).
-- Una llamada real a un endpoint protegido (`Pokemones` → `GET /pokemones`)
-  como ejemplo de "recurso vía API Gateway".
-- **Guards de ruta explícitos** con `react-router-dom`:
-  - `RequireAuth` — guard de autenticación (layout route, redirige sola al login).
-  - `RequireRole` — guard de autorización (lee el claim `roles` del access
-    token de la API; solo UX, la Lambda debe revalidar).
-  - Rutas de ejemplo: `/` (pública), `/dashboard` (requiere sesión), `/admin`
-    (requiere sesión + App Role `Admin`).
+## React Compiler
 
-Este starter usa scopes genéricos (`read`/`write`) y una sola ruta de
-ejemplo. Para Pedidos360 tienen que extenderlo con scopes por dominio
-(`orders.read`, `catalog.write`, …), más páginas bajo el mismo `RequireAuth`,
-y Lambdas separadas por dominio — la guía explica cómo.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Quick start
+## Expanding the Oxlint configuration
 
-```bash
-corepack pnpm install   # este repo usa pnpm (pnpm-lock.yaml); corepack viene con Node
-cp .env.example .env    # completa con los valores de TU tenant (ver la guía, sección 4 y 6)
-corepack pnpm dev       # http://localhost:5173
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-Otros comandos: `corepack pnpm build` (build + type-check), `corepack pnpm lint` (oxlint).
-
-## Stack
-
-React 19 · Vite 8 · TypeScript · `@azure/msal-browser` / `@azure/msal-react` ·
-`react-router-dom` · AWS API Gateway (HTTP API) + Lambda (backend, repo aparte).
-
----
-
-Basado en la plantilla [docentedev/cloud-01-entra-app-integration](https://github.com/docentedev/cloud-01-entra-app-integration),
-extendido con el flujo de token hacia un backend propio, guards de ruta, y la
-guía adaptada al caso Pedidos360.
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
