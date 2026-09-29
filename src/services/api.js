@@ -1,27 +1,59 @@
 import axios from 'axios';
-import { apiConfig } from '../config/authConfig';
 import { auth } from '../firebase';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+console.log("API Gateway URL:", API_URL);
+
 export const apiClient = axios.create({
-    baseURL: apiConfig.backendEndpoint,
+    baseURL: API_URL,
 });
 
-apiClient.interceptors.request.use(async (config) => {
-    if (auth.currentUser) {
-        const token = await auth.currentUser.getIdToken();
-        config.headers.Authorization = `Bearer ${token}`;
+apiClient.interceptors.request.use(
+    async (config) => {
+
+        const user = auth.currentUser;
+
+        if (user) {
+            const token = await user.getIdToken();
+
+            config.headers.Authorization =
+                `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+);
 
 export const getObras = async () => {
+
     try {
-        const response = await apiClient.get('');
+
+        console.log(
+            "Consultando:",
+            `${API_URL}/obras`
+        );
+
+        const response =
+            await apiClient.get('/obras');
+
+        console.log(
+            "Respuesta API Gateway:",
+            response.data
+        );
+
         return response.data;
+
     } catch (error) {
-        console.error("Error al obtener obras de la API:", error);
+
+        console.error(
+            "Error al obtener obras:",
+            error
+        );
+
         throw error;
     }
 };
