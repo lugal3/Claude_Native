@@ -1,19 +1,24 @@
 import axios from 'axios';
 import { apiConfig } from '../config/authConfig';
+import { auth } from '../firebase';
 
-// Interceptor base (opcional, si se requiere configuración global)
 export const apiClient = axios.create({
     baseURL: apiConfig.backendEndpoint,
 });
 
-export const getObras = async (accessToken) => {
+apiClient.interceptors.request.use(async (config) => {
+    if (auth.currentUser) {
+        const token = await auth.currentUser.getIdToken();
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
+
+export const getObras = async () => {
     try {
-        // Petición al backend simulado
-        const response = await apiClient.get('', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`, // Token de Entra ID adjunto
-            },
-        });
+        const response = await apiClient.get('');
         return response.data;
     } catch (error) {
         console.error("Error al obtener obras de la API:", error);

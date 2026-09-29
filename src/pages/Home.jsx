@@ -1,14 +1,11 @@
 import React from "react";
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../config/authConfig";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
-    const { instance } = useMsal();
+    const navigate = useNavigate();
 
     const handleLogin = () => {
-        instance.loginRedirect(loginRequest).catch(e => {
-            console.error(e);
-        });
+        navigate("/login");
     };
 
     return (
@@ -21,7 +18,7 @@ export const Home = () => {
                     <div className="login-section">
                         <p className="login-prompt">Únete a nuestra comunidad para una experiencia completa</p>
                         <button className="login-button" onClick={handleLogin}>
-                            Iniciar Sesión con Entra ID
+                            Iniciar Sesión
                         </button>
                     </div>
                 </div>

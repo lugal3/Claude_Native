@@ -7,6 +7,7 @@ import { Contacto } from './pages/Contacto';
 import { Artistas } from './pages/Artistas';
 import { Obras } from './pages/Obras';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Login } from './components/Login';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/artistas" element={<Artistas />} />
         <Route path="/obras" element={<Obras />} />
+        <Route path="/login" element={<Login />} />
 
-        {/* Ruta privada protegida por Entra ID */}
+        {/* Ruta privada protegida */}
         <Route
           path="/dashboard"
           element={

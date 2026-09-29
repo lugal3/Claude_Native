@@ -1,41 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useMsal } from "@azure/msal-react";
-import { useApi } from "../hooks/useApi";
+import { useAuth } from "../context/AuthContext";
 import { getObras } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
-    const { instance, accounts } = useMsal();
-    const { getAccessToken } = useApi();
+    const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
 
     const [apiData, setApiData] = useState(null);
     const [error, setError] = useState(null);
-
-    const account = accounts[0];
+    const [claims, setClaims] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = await getAccessToken();
-            if (token) {
+            if (currentUser) {
                 try {
-                    const data = await getObras(token);
+                    const data = await getObras();
                     setApiData(data);
+                    
+                    const tokenResult = await currentUser.getIdTokenResult();
+                    setClaims(tokenResult.claims);
                 } catch (err) {
                     setError("Error al obtener los datos de la API. Revisa CORS y configuración.");
                 }
             }
         };
 
-        if (account) {
-            fetchData();
-        }
-    }, [account, getAccessToken]);
+        fetchData();
+    }, [currentUser]);
 
-    const handleLogout = () => {
-        instance.logoutRedirect({
-            postLogoutRedirectUri: "/",
-        });
+    const handleLogout = async () => {
+        await logout();
+        navigate("/");
     };
 
     return (
@@ -46,12 +42,12 @@ export const Dashboard = () => {
             </header>
 
             <section className="claims-section">
-                <h3>Bienvenido, {account?.name}</h3>
-                <p><strong>Email:</strong> {account?.username}</p>
+                <h3>Bienvenido, {currentUser?.displayName || currentUser?.email}</h3>
+                <p><strong>Email:</strong> {currentUser?.email}</p>
                 
                 <div className="json-box">
                     <h4>Claims del Token (incluye Roles si existen):</h4>
-                    <pre>{JSON.stringify(account?.idTokenClaims, null, 2)}</pre>
+                    <pre>{JSON.stringify(claims, null, 2)}</pre>
                 </div>
             </section>
 
