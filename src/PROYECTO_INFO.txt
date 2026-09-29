@@ -1,0 +1,29 @@
+INFORME DE PROYECTO: Pedidos360 (Tienda 'amirgo')
+
+1. RESUMEN DEL PROYECTO
+- Nombre en código: Pedidos360 (Frontend de simulación: Tienda de Arte Minimalista 'amirgo').
+- Stack Tecnológico: React 18 (JavaScript puro, SIN TypeScript), Vite, CSS puro, React Router DOM v6.
+- Objetivo Principal: Proveer un frontend público y un dashboard privado protegido por autenticación usando Firebase.
+
+2. ARQUITECTURA DE AUTENTICACIÓN
+- Proveedor: Firebase Authentication.
+- Librerías: firebase.
+- Flujo: Email/Password u otros proveedores de Firebase.
+- Configuración Centralizada: Ubicada en `src/firebase.js`. Requiere la configuración de Firebase en el frontend.
+
+3. ESTRUCTURA Y COMPONENTES CLAVE
+- `src/main.jsx`: Punto de entrada. Inicializa el AuthProvider.
+- `src/App.jsx`: Gestor de rutas usando `react-router-dom`. Define `/` (Pública) y `/dashboard` (Privada).
+- `src/components/ProtectedRoute.jsx`: Componente "Guard". Redirige a `/` si el usuario no está logueado en Firebase.
+- `src/pages/Home.jsx`: Vista pública de la tienda amirgo.
+- `src/pages/Dashboard.jsx`: Vista privada. Muestra los datos del usuario logueado en Firebase.
+
+4. COMUNICACIÓN CON EL BACKEND (AWS API Gateway)
+- `src/services/api.js`: Utiliza `axios` para configurar el cliente HTTP.
+
+5. ESTILOS
+- `src/index.css`: Contiene todo el CSS puro del proyecto. Utiliza variables CSS y una paleta de colores limpia (fondo hueso: #f9f6f0, texto oscuro: #2c2c2c) priorizando el minimalismo.
+
+6. PASOS SIGUIENTES PARA DESARROLLO
+- Rellenar `src/firebase.js` con las credenciales de Firebase.
+- Configurar reglas de seguridad si se usa Firestore u otros servicios de Firebase.
