@@ -57,3 +57,38 @@ export const getObras = async () => {
         throw error;
     }
 };
+
+export const getAdmin = async () => {
+
+    try {
+
+        const response =
+            await apiClient.get('/admin');
+
+        return response.data;
+
+    } catch (error) {
+
+        console.error(
+            "Error al consultar Admin:",
+            error
+        );
+
+        throw error;
+    }
+};
+
+export const getProductos = async () => {
+    const response = await apiClient.get('/productos');
+    return response.data;
+};
+
+export const getPedidos = async () => {
+    const response = await apiClient.get('/pedidos');
+    return response.data;
+};
+
+export const crearPedido = async (pedido) => {
+    const response = await apiClient.post('/pedidos', pedido);
+    return response.data;
+};
